@@ -7,8 +7,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='buy_euro_log.txt')
 
-TARGET = 35.05
 API_KEY = 'your api key here'
+TARGET_PRICE = 31.5
 
 def main():
     current_time = datetime.now().strftime("%m/%d %H:%M")
@@ -21,14 +21,19 @@ def main():
     current_price = float(euro_prices[3])
     previous_price = get_previous_price()
 
-    if current_price <= TARGET and current_price != previous_price:
-        response = requests.get(f"https://maker.ifttt.com/trigger/buy_euro_currency/with/key/{API_KEY}?value1={euro_prices[3]}&value2={euro_prices[4]}&value3={current_time}")
+    if current_price <= TARGET_PRICE and current_price != previous_price:
+        msg = "\n快買歐元喔！\n" \
+             f"即期賣匯： {euro_prices[3]}\n" \
+             f"現金賣匯： {euro_prices[4]}\n" \
+             f"更新時間： {current_time}"
+
+        response = post_to_line_chat(msg)
 
         if response.status_code == 200:
             logging.info("Message sent.")
         else:
             logging.error(f"Status code: {response.status_code}")
-            logging.error("Something went wrong with the IFTTT service.")
+            logging.error("Something went wrong with the LINE Notify service.")
 
         # save current price to file
         print(euro_prices[3], file=open('previous_price.txt', 'w'))
@@ -55,6 +60,14 @@ def get_previous_price():
     except Exception:
         result = None
     return result
+
+def post_to_line_chat(msg):
+    headers =  {
+        "Authorization": "Bearer " + TOKEN, 
+        "Content-Type" : "application/x-www-form-urlencoded"
+    }
+    payload = {'message': msg}
+    return requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
 
 if __name__ == '__main__':
     main()
