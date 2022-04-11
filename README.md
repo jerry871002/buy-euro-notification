@@ -13,3 +13,32 @@
 
 九月要去芬蘭讀研究所，準備開始換點歐元<br>
 改成直接用 LINE Notify 傳到群組，不再透過 IFTTT
+
+## How to setup crontab?
+
+To edit the content of crontab, enter the following command in terminal
+```bash
+crontab -e
+```
+
+A task in crontab is formatted as below
+```
+m h  dom mon dow   command
+```
+
+| Column | Range | Description        |
+| ------ | ----- | ------------------ |
+| m      | 0-59  |                    |
+| h      | 0-23  |                    |
+| dom    | 1-31  |                    |
+| mon    | 1-12  |                    |
+| dow    | 0-7   | 0 and 7 for Sunday |
+
+
+For example, if you want to set the script to work every 15 minutes during working hours, add
+
+```bash
+0,15,30,45 9-15 * * 1-5 python3 <path-to-repo>/buy_euro.py
+```
+
+into the crontab and things will work
