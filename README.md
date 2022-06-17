@@ -14,6 +14,11 @@
 九月要去芬蘭讀研究所，準備開始換點歐元<br>
 改成直接用 LINE Notify 傳到群組，不再透過 IFTTT
 
+## Update (2022/06/17):
+
+銀行的網頁改版了<br>
+改成用 API 的方式抓匯率，不用再爬蟲了
+
 ## How to setup crontab?
 
 To edit the content of crontab, enter the following command in terminal
