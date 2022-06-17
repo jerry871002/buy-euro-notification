@@ -3,3 +3,6 @@
 
 # experiments
 *.ipynb
+
+# log files
+*.txt
